@@ -44,6 +44,41 @@ ChatBot::~ChatBot()
 
 //// STUDENT CODE
 ////
+//Copy Constructor
+ChatBot::ChatBot(const ChatBot & chatBot) : _image{ new wxBitmap{*(chatBot._image)}} {
+    std::cout << "Copy Constructor ChatBot\n";
+}
+
+//Move Constructor
+ChatBot::ChatBot(ChatBot && chatBot) : _image{chatBot._image} {
+    chatBot._image = nullptr;
+    std::cout << "Move Constructor ChatBot\n";
+}
+
+//Copy Assignment Operator
+ChatBot & ChatBot::operator=(const ChatBot & chatBot) {
+    if (&chatBot != this) {
+        delete _image;
+        _image = nullptr;
+        _image = new wxBitmap(*(chatBot._image));
+    }
+    
+    std::cout << "Copy Assignement Operator ChatBot\n";
+    return*this;
+}
+
+//Move Assignment Operator
+ChatBot & ChatBot::operator=(ChatBot && chatBot) {
+    if (&chatBot != this) {
+        delete _image;
+        _image = chatBot._image;
+        chatBot._image = nullptr;
+    }
+    
+    std::cout << "Move Assignement Operator ChatBot\n";
+    
+    return *this;
+}
 
 ////
 //// EOF STUDENT CODE
