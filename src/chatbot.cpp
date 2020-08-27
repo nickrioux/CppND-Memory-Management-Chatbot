@@ -12,7 +12,7 @@
 ChatBot::ChatBot()
 {
     // invalidate data handles
-    _image = nullptr;
+    _image = NULL;
     _chatLogic = nullptr;
     _rootNode = nullptr;
 }
@@ -45,38 +45,57 @@ ChatBot::~ChatBot()
 //// STUDENT CODE
 ////
 //Copy Constructor
-ChatBot::ChatBot(const ChatBot & chatBot) : _image{ new wxBitmap{*(chatBot._image)}} {
-    std::cout << "Copy Constructor ChatBot\n";
+ChatBot::ChatBot(const ChatBot & chatBot) {
+    std::cout << "ChatBot Copy Constructor\n";
+    
+    _chatLogic = chatBot._chatLogic;
+    _chatLogic->SetChatbotHandle(*this);
+    _rootNode = chatBot._rootNode;
+    _image = chatBot._image;
 }
 
 //Move Constructor
-ChatBot::ChatBot(ChatBot && chatBot) : _image{chatBot._image} {
-    chatBot._image = nullptr;
-    std::cout << "Move Constructor ChatBot\n";
+ChatBot::ChatBot(ChatBot && chatBot) : _chatLogic{chatBot._chatLogic}, _rootNode{chatBot._rootNode}, _image{chatBot._image}  {
+
+    std::cout << "ChatBot Move Constructor\n";
+
+    chatBot._chatLogic = nullptr;
+    chatBot._rootNode = nullptr;
+    chatBot._image = NULL;
 }
 
 //Copy Assignment Operator
 ChatBot & ChatBot::operator=(const ChatBot & chatBot) {
+    
+    std::cout << "ChatBot Copy Assignement Operator\n";
+
     if (&chatBot != this) {
-        delete _image;
-        _image = nullptr;
-        _image = new wxBitmap(*(chatBot._image));
+    _chatLogic = chatBot._chatLogic;
+    _chatLogic->SetChatbotHandle(*this);
+    _rootNode = chatBot._rootNode;
+    _image = chatBot._image;
     }
     
-    std::cout << "Copy Assignement Operator ChatBot\n";
     return*this;
 }
 
 //Move Assignment Operator
 ChatBot & ChatBot::operator=(ChatBot && chatBot) {
+    
+    std::cout << "ChatBot Move Assignement Operator\n";
+    
     if (&chatBot != this) {
-        delete _image;
+        _chatLogic = chatBot._chatLogic;
+        _chatLogic->SetChatbotHandle(*this);
+        _rootNode = chatBot._rootNode;
         _image = chatBot._image;
-        chatBot._image = nullptr;
+
+        
+        chatBot._chatLogic = nullptr;
+        chatBot._rootNode = nullptr;
+        chatBot._image = NULL;
     }
-    
-    std::cout << "Move Assignement Operator ChatBot\n";
-    
+        
     return *this;
 }
 
